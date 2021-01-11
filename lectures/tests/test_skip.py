@@ -1,11 +1,6 @@
 import unittest
 import sys
 import falcon
-# import pip
-# print(type(pip.get_installed_distributions()[0]))
-
-# import pkg_resources
-# print(pkg_resources.get_distribution('flask'))
 
 
 def external_resource_available():
