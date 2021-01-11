@@ -1,0 +1,12 @@
+Homework after tests-lecture:
+1. write unit tests for:
+ test_simple_calc.py + test_simple_employee.py
+2. if you want more challenge, write tests for test_complex.py
+Use SetUp, TearDown methods, Mock(), patch etc.
+Note: pay attention to names of test methods, and make sure each method tests one thing only!
+
+
+Homework after tests-practice:
+Get to know what is test coverage (https://pytest-cov.readthedocs.io/en/latest/)
+and check code coverage for your tests - try to increase the coverage for your unit tests as much as possible.
+https://www.simform.com/test-coverage/ - if you want to know more about test coverage.
