@@ -1,12 +1,14 @@
 import unittest
 from unittest.mock import patch
 
-
 from homework.tests_simple_employee import Employee
 
 
 class SimpleEmployeeTest(unittest.TestCase):
-    """Class for making unittests of 'test_simple_employee.py' """
+    """
+    Class for making unittests of 'test_simple_employee.py'
+    """
+
     first = "Firstname"
     last = "Lastname"
     pay = 4200

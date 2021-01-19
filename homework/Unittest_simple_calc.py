@@ -4,7 +4,9 @@ import homework.test_simple_calc as calc
 
 
 class SimpleCalcTest(unittest.TestCase):
-    """Class for making unittests of 'test_simple_calc.py' """
+    """
+    Class for making unittests of 'test_simple_calc.py'
+    """
 
     def test_add(self):
         self.assertEqual(calc.add(1, 3), 4)
@@ -25,6 +27,8 @@ class SimpleCalcTest(unittest.TestCase):
         self.assertEqual(calc.divide(4, 1), 4.0)
         self.assertEqual(calc.divide(0, 4), 0.0)
         self.assertEqual(calc.divide(4, 4), 1.0)
+        self.assertRaises(ValueError, lambda: calc.divide(5, 0))
+        self.assertRaises(TypeError, lambda: calc.divide('one', 'two'))
 
 
 if __name__ == "__main__":
