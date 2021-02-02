@@ -4,11 +4,16 @@ cases (good luck :)
 
 Tests should be in separate module.
 
-# you Should create and test next functions
-* `create_user function(dict: user_info)`
+CRUD for cart and cart details should be done together
+  `create_cart(dict: cart)` where cart
+  `{'user_id': 1, 'creation_time': datetime(...), 'cart_details': [DICTS_WITH_CART_DETAILS]...}`
+
+# create and test next functions
+* `create_user(dict: user_info)`
 * `read_user_info(int: _id)`
 * `update_user(dict: new_info, int: _id`
 * `delete_user(int: _id)`
-* CRUD for cart and cart details should be done together
-  `create_cart(dict: cart)` where cart
-  `{'user_id': 1, 'creation_time': datetime(...), 'cart_details': [DICTS_WITH_CART_DETAILS]...}`
+* `create_cart(dict: cart)`
+* `update_cart(dict: cart)`
+* `read_carts(int: user_id)`
+* `delete_cart(int: _id)` - should delete cart_details as well

@@ -32,6 +32,8 @@ CREATE TABLE cart_details
 
 );
 
+--- Just example data
+
 
 INSERT INTO users
 (name, email, registration_time)
