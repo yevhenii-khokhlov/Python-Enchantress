@@ -15,5 +15,5 @@ CRUD for cart and cart details should be done together
 * `delete_user(int: _id)`
 * `create_cart(dict: cart)`
 * `update_cart(dict: cart)`
-* `read_carts(int: user_id)`
+* `read_cart(int: _id)`
 * `delete_cart(int: _id)` - should delete cart_details as well
