@@ -47,6 +47,7 @@ def update_user(new_info: dict, _id: int):
 
 def delete_user(_id: int):
     with Connection() as cursor:
+        delete_cart(_id)
         cursor.execute('DELETE FROM users WHERE id = %s',
                        (_id,))
 
@@ -68,7 +69,7 @@ def create_cart(cart: dict):
 def update_cart(cart: dict):
     with Connection() as cursor:
         cursor.executemany(f"""UPDATE cart SET creation_time = '{cart["creation_time"]}' 
-                           WHERE ser_id = {cart['user_id']}""",
+                           WHERE user_id = {cart['user_id']}""",
                            cart)
         cursor.executemany(f"""
                            UPDATE cart_details SET price = %(price)s, product = %(product)s
@@ -94,13 +95,4 @@ def delete_cart(_id: int):
 
 
 if __name__ == '__main__':
-    users_dict = {'user_id': 1, 'name': 'Semen', 'email': 'semen@gmail.com',
-                  'registration_time': '2021-02-05 07:21:37', "creation_time": '2021-02-05 07:21:37',
-                  'cart_details': [{'cart_id': 1, 'price': 130, 'product': 'sony'}]}
-
-    users_dict_update = {'user_id': 1, 'name': 'Ihor', 'email': 'Ihor@yahoo.com',
-                         'registration_time': '2021-02-05 07:21:37', "creation_time": '2021-02-05 07:21:37',
-                         'cart_details': [{'cart_id': 1, 'price': 300, 'product': 'milk'}]}
-
-    print(read_user_info(4))
-    create_cart(users_dict)
+    pass
