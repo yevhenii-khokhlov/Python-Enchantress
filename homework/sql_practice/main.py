@@ -1,13 +1,27 @@
 import psycopg2
 
+DB_NAME = "yevhenii"
+USER = "yevhenii"
+PASSWORD = "pass"
+HOST = "localhost"
+PORT = "5432"
+
 
 class Connection:
+    def __init__(self):
+        self.dbname = DB_NAME
+        self.user = USER
+        self.password = PASSWORD
+        self.host = HOST
+        self.port = PORT
+
     def __enter__(self):
-        self.connection = psycopg2.connect(dbname="yevhenii",
-                                           user="yevhenii",
-                                           password='pass',
-                                           host='localhost',
-                                           port='5432'
+        self.connection = psycopg2.connect(
+                                           dbname=self.dbname,
+                                           user=self.user,
+                                           password=self.password,
+                                           host=self.host,
+                                           port=self.port
                                            )
         self.connection.autocommit = True
         self.cursor = self.connection.cursor()

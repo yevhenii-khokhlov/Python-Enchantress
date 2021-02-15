@@ -56,9 +56,7 @@ class MainTest(TestCase):
     def test_create_cart(self):
         create_user(dict_for_tests_2)
         create_cart(dict_for_tests_2)
-        self.assertEqual(read_cart(2),
-                         [(2, 2, 100, 'apple')]
-                         )
+        self.assertEqual(read_cart(2), [(2, 2, 100, 'apple')])
 
     def test_update_cart(self):
         upd_cart = {
