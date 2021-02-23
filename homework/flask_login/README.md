@@ -5,4 +5,4 @@ return JSON data in responses to all it's endpoints.
   * Add additional */orders* endpoint to *login_app/main.py* secured
     by *login_required* decorator. This endpoint should return list of
     orders related to user.
-  * Add reate-database flask cli
+  * Add create-database flask cli
