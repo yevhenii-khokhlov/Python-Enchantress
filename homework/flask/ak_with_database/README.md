@@ -9,12 +9,6 @@ our_store
 - config.py
 tests
 - conftest.py
-
-
-
-
-# Run postgress from docker
-docker run -p 5432:5432 --name some-postgres -e POSTGRES_PASSWORD=pass -e POSTGRES_USER=illia -d postgres
 - unit
 - integration
 - end_to_end
