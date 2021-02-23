@@ -3,6 +3,6 @@ return JSON data in responses to all it's endpoints.
   * Add Order model with user_id and time of order
   * Add OrderLine model with products information (product name, and price)
   * Add additional */orders* endpoint to *login_app/main.py* secured
-    by *login_required* decorator (Yes you should add 2 more models to
-    'models.py'
+    by *login_required* decorator. This endpoint should return list of
+    orders related to user.
   * Add reate-database flask cli
