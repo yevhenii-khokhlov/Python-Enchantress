@@ -10,6 +10,7 @@ def create_app():
 
     app.config['SECRET_KEY'] = 'my_secret'
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.db'
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
     login_manager = LoginManager()
     login_manager.login_view = 'auth.login'

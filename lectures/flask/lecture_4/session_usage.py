@@ -11,6 +11,7 @@ def index():
         return f'Logged in as {session["username"]}'
     return 'You are not logged in'
 
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
