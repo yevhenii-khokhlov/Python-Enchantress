@@ -5,12 +5,12 @@ app = Flask(__name__)
 
 @app.route('/')
 def main():
-    return 'It is my flask simple app.'
+    return 'It is my flask_hw simple app.'
 
 
 @app.route('/info')
 def info():
-    return 'It is my flask simple app.'
+    return 'It is my flask_hw simple app.'
 
 
 if __name__ == "__main__":
