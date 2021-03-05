@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from flask import Flask, request
+from flask import Flask, request, jsonify
 from datetime import datetime
 
 
@@ -38,7 +38,7 @@ def no_such_cart_handler(error):
 @amazon_killer.route("/users", methods=["POST"])
 def create_user():
     global user_counter
-    user = request.json
+    user = dict(request.args)
     user['user_id'] = user_counter
     response = {
         "registration_timestamp": datetime.now().isoformat(),
@@ -62,13 +62,13 @@ def get_user(user_id):
 
 @amazon_killer.route("/users/<int:user_id>", methods=["PUT"])
 def update_user(user_id):
-    user = request.json
+    user = dict(request.args)
     response = {"status": "success"}
     try:
         USERS_DATABASE[user_id]["name"] = user["name"]
         USERS_DATABASE[user_id]["email"] = user["email"]
     except KeyError:
-        raise NoSuchUser
+        raise NoSuchUser(user_id)
     else:
         return response, 200
 
@@ -89,7 +89,7 @@ def delete_user(user_id):
 @amazon_killer.route("/carts", methods=["POST"])
 def create_cart():
     global cart_counter
-    cart = request.json
+    cart = dict(request.args)
     response = {
         "cart_id": cart_counter,
         "creating_time": datetime.now().isoformat()
@@ -113,7 +113,7 @@ def get_cart(cart_id):
 
 @amazon_killer.route("/carts/<int:card_id>", methods=["PUT"])
 def update_cart(cart_id):
-    cart = request.json
+    cart = dict(request.args)
     response = {"status": "success"}
     try:
         CART_DATABASE[cart_id]["products"] = cart["products"]
@@ -132,7 +132,7 @@ def delete_cart(cart_id):
         CART_DATABASE[cart_id].pop()
         cart_counter -= 1
     except KeyError:
-        raise NoSuchCart
+        raise NoSuchCart(cart_id)
     else:
         return response, 200
 

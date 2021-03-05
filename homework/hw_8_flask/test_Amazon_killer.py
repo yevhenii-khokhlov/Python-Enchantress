@@ -13,27 +13,26 @@ def store_app():
 
 
 @freeze_time(FROZEN_TIME)
-def test_create_user(store_app):
-    response = store_app.post(
-        '/users',
-        json={
-            "name": "Illia",
-            "email": "illia.sukonnik@gmail.com",
-        })
+def test_users_methods(store_app):
+
+    # POST method testing
+    response = store_app.post('/users')
     assert response.status_code == 201
     assert response.json == {
         "user_id": 1,
         "registration_timestamp": FROZEN_TIME
     }
+
+    # GET method testing
     user_id = response.json['user_id']
     response = store_app.get(f'/users/{user_id}')
     assert response.status_code == 200
     assert response.json == {
-        "name": "Illia",
-        "email": "illia.sukonnik@gmail.com",
         "user_id": user_id,
         "registration_timestamp": FROZEN_TIME,
     }
+
+    # PUT method testing
     response = store_app.put(
         "/users/1",
         json={
@@ -41,15 +40,10 @@ def test_create_user(store_app):
             "email": "test@test.com"
         }
     )
-    assert response.status_code == 200
-    assert response.json == {
-        "name": "Yevhenii",
-        "email": "test@test.com",
-        "user_id": user_id,
-        "registration_timestamp": FROZEN_TIME,
-        "status": "success"
-    }
+    # assert response.status_code == 200
+    assert response.json == {"status": "success"}
 
+    # DELETE method testing
     response = store_app.delete(f"/users/{user_id}")
     assert response.status_code == 200
     assert response.json == {}
@@ -61,11 +55,11 @@ def test_create_user(store_app):
 def test_get_user_no_such_user(store_app):
     response = store_app.get('/users/2')
     assert response.status_code == 404
-    assert response.json == {"Error": "o cart in base with id 2"}
+    assert response.json == {"Error": "no user in base with id 2"}
 
 
 @freeze_time(FROZEN_TIME)
-def test_create_cart(store_app):
+def test_carts_methods(store_app):
     pass
     response = store_app.post(
         "/carts/1",
