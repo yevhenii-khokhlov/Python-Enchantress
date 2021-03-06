@@ -53,6 +53,10 @@ def signup_post():
     email = request.form.get('email')
     name = request.form.get('name')
     password = request.form.get('password')
+    # data = dict(request.args)
+    # email = data['email']
+    # name = data['name']
+    # password = data['password']
 
     # if this returns a user, then the email already exists in database
     user = User.query.filter_by(email=email).first()
@@ -79,6 +83,11 @@ def login_post():
     email = request.form.get('email')
     password = request.form.get('password')
     remember = True if request.form.get('remember') else False
+
+    data = dict(request.args)
+    email = data['email']
+    password = data['password']
+    remember = True if data['remember'] else False
 
     user = User.query.filter_by(email=email).first()
 
