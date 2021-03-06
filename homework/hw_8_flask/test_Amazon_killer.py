@@ -1,7 +1,6 @@
 import pytest
 from freezegun import freeze_time
 from .Amazon_killer import amazon_killer as app
-from flask import jsonify
 
 FROZEN_TIME = '2021-02-19T11:45:00'
 
@@ -41,19 +40,13 @@ def test_users_methods(store_app):
             "email": "test@test.com"
         }
     )
-    assert response.status_code == 200
+    assert response.status_code == 201
     assert response.json == {"status": "success"}
 
     # DELETE method testing
     response = store_app.delete(f"/users/{user_id}")
     assert response.status_code == 200
     assert response.json == {"status": "success"}
-
-
-def test_get_user_no_such_user(store_app):
-    response = store_app.get('/users/2')
-    assert response.status_code == 404
-    assert response.json == {"Error": "no user in base with id 2"}
 
 
 @freeze_time(FROZEN_TIME)
@@ -67,11 +60,11 @@ def test_carts_methods(store_app):
             "products": [
                 {
                     "product": "bread",
-                    "price": 50,
+                    "price": 25,
                 },
                 {
                     "product": "butter",
-                    "price": 100,
+                    "price": 50,
                 }
             ]
         }
@@ -79,7 +72,7 @@ def test_carts_methods(store_app):
     assert response.status_code == 201
     assert response.json == {
         "cart_id": 1,
-        "creating_time": FROZEN_TIME
+        "registration_timestamp": FROZEN_TIME
     }
 
     # GET method testing
@@ -88,7 +81,7 @@ def test_carts_methods(store_app):
     assert response.status_code == 200
     assert response.json == {
         "cart_id": 1,
-        "creating_time": FROZEN_TIME,
+        "registration_timestamp": FROZEN_TIME,
     }
 
     # PUT method testing
@@ -114,8 +107,14 @@ def test_carts_methods(store_app):
     assert response.json == {"status": "success"}
 
 
+def test_get_user_no_such_user(store_app):
+    response = store_app.get("/users/2")
+    assert response.status_code == 404
+    assert response.json == {"Error": "no user in base with id 2"}
+
+
 @freeze_time(FROZEN_TIME)
 def test_get_no_such_cart(store_app):
-    response = store_app.get("/cart/10")
+    response = store_app.get("/carts/10")
     assert response.status_code == 404
-    assert response.json == {"error": "no such cart with id 10"}
+    assert response.json == {"Error": "no cart in base with id 10"}

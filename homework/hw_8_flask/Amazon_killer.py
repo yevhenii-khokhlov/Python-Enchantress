@@ -8,14 +8,6 @@ amazon_killer = Flask(__name__)
 USERS_DATABASE, CART_DATABASE = {}, {}
 cart_counter, user_counter = 1, 1
 
-# USERS_DATABASE = {
-#     1:
-#     {
-#         "registration_timestamp": '2021-02-19T11:45:00',
-#         "user_id": 1
-#     }
-# }
-
 
 @dataclass()
 class NoSuchUser(Exception):
@@ -62,12 +54,14 @@ def get_user(user_id):
     except KeyError:
         raise NoSuchUser(user_id)
     else:
-        return user
+        return user, 200
 
 
 @amazon_killer.route("/users/<int:user_id>", methods=["PUT"])
 def update_user(user_id):
-    data = dict(request.args)
+    data = request.json
+    if not data:
+        data = dict(request.args)
     try:
         USERS_DATABASE[user_id].update(
             {
@@ -79,7 +73,7 @@ def update_user(user_id):
         raise NoSuchUser(user_id)
     else:
         response = {"status": "success"}
-        return response, 200
+        return response, 201
 
 
 @amazon_killer.route("/users/<int:user_id>", methods=["DELETE"])
@@ -114,12 +108,14 @@ def get_cart(cart_id):
     except KeyError:
         raise NoSuchCart(cart_id)
     else:
-        return cart
+        return cart, 200
 
 
 @amazon_killer.route("/carts/<int:cart_id>", methods=["PUT"])
 def update_cart(cart_id):
-    data = dict(request.args)
+    data = request.json
+    if not data:
+        data = dict(request.args)
     try:
         CART_DATABASE[cart_id].update(
             {
