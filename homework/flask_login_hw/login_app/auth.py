@@ -1,7 +1,6 @@
 from flask_login import login_user, logout_user, login_required
-from flask import Blueprint, redirect, url_for, request, flash, jsonify, render_template
+from flask import Blueprint, redirect, url_for, request, flash, jsonify
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_restful import Resource
 
 from .models import User
 from . import db
@@ -12,51 +11,46 @@ auth = Blueprint('auth', __name__)
 
 @auth.route('/login')
 def login():
-    # response = jsonify(
-    #     {
-    #         "status": "success",
-    #         "page_info": "this is login page"
-    #     }
-    # )
-    # return response, 200
-    return render_template('login.html')
+    response = jsonify(
+        {
+            "status": "success",
+            "page_info": "this is login page"
+        }
+    )
+    return response, 200
 
 
 @auth.route('/signup')
 def signup():
-    # response = jsonify(
-    #     {
-    #         "status": "success",
-    #         "page_info": "this is signup page"
-    #     }
-    # )
-    # return response, 200
-    return render_template('signup.html')
+    response = jsonify(
+        {
+            "status": "success",
+            "page_info": "this is signup page"
+        }
+    )
+    return response, 200
 
 
 @auth.route('/logout')
 @login_required
 def logout():
     logout_user()
-    # response = jsonify(
-    #     {
-    #         "status": "success",
-    #         "page_info": "logout user"
-    #     }
-    # )
-    # return response, 200
-    return redirect(url_for('main.index'))
+    response = jsonify(
+        {
+            "status": "success",
+            "page_info": "logout user"
+        }
+    )
+    return response, 200
 
 
 @auth.route('/signup', methods=['POST'])
 def signup_post():
-    email = request.form.get('email')
-    name = request.form.get('name')
-    password = request.form.get('password')
-    # data = dict(request.args)
-    # email = data['email']
-    # name = data['name']
-    # password = data['password']
+    data = request.get_json()
+
+    email = data['email']
+    name = data['name']
+    password = data['password']
 
     # if this returns a user, then the email already exists in database
     user = User.query.filter_by(email=email).first()
@@ -80,11 +74,8 @@ def signup_post():
 
 @auth.route('/login', methods=['POST'])
 def login_post():
-    email = request.form.get('email')
-    password = request.form.get('password')
-    remember = True if request.form.get('remember') else False
+    data = request.get_json()    # {"email": "y@com.ua", "password": "pass", "remember": "remember"}
 
-    data = dict(request.args)
     email = data['email']
     password = data['password']
     remember = True if data['remember'] else False
