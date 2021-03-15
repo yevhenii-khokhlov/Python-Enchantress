@@ -9,13 +9,23 @@ PATTERNS = [
 PATTERN_FOR_REPLACE = "*******"
 
 
-def parse(path) -> str:
+def get_text(path) -> str:
     with open(path) as config_file:
         text = config_file.read()
-        for pattern in PATTERNS:
-            res = re.findall(pattern, text, flags=re.M)
-            text = re.sub(res[0], PATTERN_FOR_REPLACE, text)
-        return text
+    return text
+
+
+def replace_patterns(text):
+    for pattern in PATTERNS:
+        res = re.findall(pattern, text, flags=re.M)
+        text = re.sub(res[0], PATTERN_FOR_REPLACE, text)
+    return text
+
+
+def parse(path):
+    text = get_text(path)
+    res = replace_patterns(text)
+    return res
 
 
 if __name__ == "__main__":
