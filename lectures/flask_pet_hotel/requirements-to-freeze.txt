@@ -1,3 +1,6 @@
 flask
 pytest
 python-dotenv
+flask-sqlalchemy
+flask-migrate
+psycopg2-binary
