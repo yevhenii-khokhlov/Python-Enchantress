@@ -1,0 +1,7 @@
+flask
+pytest
+python-dotenv
+flask-sqlalchemy
+flask-migrate
+flask-restful
+psycopg2-binary
