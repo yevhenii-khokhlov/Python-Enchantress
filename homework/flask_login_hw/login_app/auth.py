@@ -1,12 +1,12 @@
 from flask_login import login_user, logout_user, login_required
-from flask import Blueprint, redirect, url_for, request, flash, jsonify
-from werkzeug.security import generate_password_hash, check_password_hash
+from flask import Blueprint, redirect, url_for, request, jsonify
+from werkzeug.security import check_password_hash
 
-from .models import User
-from . import db
+from login_app.db_manager import DBManager
 
 
 auth = Blueprint('auth', __name__)
+db_manager = DBManager()
 
 
 @auth.route('/login')
@@ -48,27 +48,7 @@ def logout():
 def signup_post():
     data = request.get_json()
 
-    email = data['email']
-    name = data['name']
-    password = data['password']
-
-    # if this returns a user, then the email already exists in database
-    user = User.query.filter_by(email=email).first()
-    if user:     # if a user is found, we want to redirect back to signup page so user can try again
-        flash('Email address already exists')
-        return redirect(url_for('auth.signup'))
-
-    # create a new user with the form data. Hash the password so the plaintext version isn't saved.
-    new_user = User(
-        email=email,
-        name=name,
-        password=generate_password_hash(password, method='sha256')
-    )
-
-    # add the new user to the database
-    db.session.add(new_user)
-    db.session.commit()
-
+    user = db_manager.sign_up(data)
     return redirect(url_for('auth.login'))
 
 
@@ -76,18 +56,10 @@ def signup_post():
 def login_post():
     data = request.get_json()    # {"email": "y@com.ua", "password": "pass", "remember": "remember"}
 
-    email = data['email']
-    password = data['password']
-    remember = True if data['remember'] else False
-
-    user = User.query.filter_by(email=email).first()
-
-    # check if the user actually exists
-    # take the user-supplied password, hash it, and compare it to the hashed password in the database
+    user = db_manager.login(data)
+    password = data.get("password")
+    remember = data.get("remember")
     if not user or not check_password_hash(user.password, password):
-        flash('Please check your login details and try again.')
-        return redirect(url_for('auth.login'))   # if the user doesn't exist or password is wrong, reload the page
-
-    # if the above check passes, then we know the user has the right credentials
+        return redirect(url_for('auth.login'))
     login_user(user, remember=remember)
     return redirect(url_for('main.profile'))

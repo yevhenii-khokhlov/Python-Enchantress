@@ -1,9 +1,11 @@
 from flask_login import LoginManager
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from login_app.db_manager import DBManager
 
 # init SQLAlchemy so we can use it later in our models
 db = SQLAlchemy()
+db_manager = DBManager()
 
 
 def create_app():
@@ -31,7 +33,7 @@ def create_app():
     @login_manager.user_loader
     def load_user(user_id):
         # since the user_id is just the primary key of our user table, use it in the query for the user
-        return User.query.get(int(user_id))
+        return db_manager.load_user(user_id)
 
     @app.cli.command('create-db')
     def create_db():

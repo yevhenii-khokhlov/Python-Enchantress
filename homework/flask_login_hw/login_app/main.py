@@ -1,12 +1,11 @@
-from flask_login import login_required, current_user
 from flask import Blueprint, jsonify, request
-from datetime import datetime
+from flask_login import login_required, current_user
 
-from .models import Orders, OrderLine
-from . import db
+from login_app.db_manager import DBManager
 
 
 main = Blueprint('main', __name__)
+db_manager = DBManager()
 
 
 @main.route('/')
@@ -39,8 +38,8 @@ def profile():
 def order_list():
     user_id = current_user.get_id()
 
-    orders = Orders.query.filter_by(user_id=user_id).all()
-    orders_lines = OrderLine.query.filter_by(user_id=user_id).all()
+    orders = db_manager.get_orders(user_id)
+    orders_lines = db_manager.get_order_lines(user_id)
 
     orders_for_return, orders_lines_for_return = {}, {}
     if orders:
@@ -69,19 +68,7 @@ def order_list():
 def order_post():
     user_id = current_user.get_id()
     data = request.get_json()
-
-    order = Orders(
-        order_time=datetime.utcnow(),
-        user_id=user_id,
-    )
-    order_line = OrderLine(
-        product=data["product"],
-        price=data["price"],
-        user_id=user_id,
-    )
-    db.session.add(order)
-    db.session.add(order_line)
-    db.session.commit()
+    db_manager.orders_post(data=data, user_id=user_id)
 
     response = {
         "status": "success",
