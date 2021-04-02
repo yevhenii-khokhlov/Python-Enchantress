@@ -1,11 +1,12 @@
+from django.contrib.auth.decorators import login_required
+from django.db.models import Count, Prefetch
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
-
 # Create your views here.
 from django.urls import reverse_lazy
+from django.utils.decorators import method_decorator
 from django.views import generic
 
-from apps.boards.models import Comment
+from apps.boards.models import Board, Comment, Task
 
 
 class CreateCommentView(generic.CreateView):
@@ -30,3 +31,26 @@ class DeleteComment(generic.DeleteView):
 
     def get_queryset(self):
         return super(DeleteComment, self).get_queryset().filter(created_by=self.request.user)
+
+
+class BoardDetailView(generic.DetailView):
+    model = Board
+    context_object_name = 'board'
+    template_name = 'boards/board-page.html'
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(BoardDetailView, self).dispatch(*args, **kwargs)
+
+    def get_queryset(self):
+        prefetch_tasks = Prefetch(
+            'cols__tasks',
+            queryset=Task.objects.select_related('col') \
+                .prefetch_related('comments')
+                .annotate(comments_count=Count('comments')) \
+                .exclude(status=Task.STATUS_ARCHIVED)
+        )
+        return super(BoardDetailView, self).get_queryset() \
+            .select_related('owner') \
+            .prefetch_related('users', 'cols', prefetch_tasks) \
+            .filter(users=self.request.user)

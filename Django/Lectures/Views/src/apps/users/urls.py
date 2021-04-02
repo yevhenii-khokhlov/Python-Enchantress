@@ -15,13 +15,11 @@ Including another URLconf
 """
 from django.urls import path
 
-from apps.boards.views import BoardDetailView, CreateCommentView, DeleteComment
+from apps.users.views import LoginView, UpdateUserView
 
-app_name = 'home'
+app_name = 'users'
 
 urlpatterns = [
-    # path('home/', home_page, name='home-page'),
-    path('<int:pk>', BoardDetailView.as_view(), name='board-detail'),
-    path('comments/create', CreateCommentView.as_view(), name='comments-create'),
-    path('comments/<int:pk>/delete', DeleteComment.as_view(), name='comments-delete'),
+    path('login/', LoginView.as_view(), name='login-page'),
+    path('profile/update', UpdateUserView.as_view(), name='profile-update-page')
 ]

@@ -23,6 +23,7 @@ from apps.home.views import simple_api
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('boards/', include('apps.boards.urls')),
+    path('users/', include('apps.users.urls')),
     path('api/users/', simple_api, name='user-endpoint'),
     path('', include('apps.home.urls'))
 ]

@@ -2,7 +2,6 @@ from django.conf import settings
 from django.db import models
 
 # Create your models here.
-from apps.boards.managers import TaskManager
 from apps.users.models import TrelloUser
 from common.models import BaseDateAuditModel
 
@@ -23,6 +22,7 @@ class Board(BaseDateAuditModel):
         related_name='boards'
     )
     users = models.ManyToManyField(to=settings.AUTH_USER_MODEL, blank=True)
+
     # users = models.ManyToManyField(to=settings.AUTH_USER_MODEL, through='BoardUsers', blank=True)
 
     def __str__(self):
@@ -32,7 +32,16 @@ class Board(BaseDateAuditModel):
         unique_together = (
             ("name", "owner"),
         )
-        ordering = ('-created_at', )
+        ordering = ('-created_at',)
+
+
+class Col(models.Model):
+    name = models.CharField(max_length=32, blank=False, db_index=True)
+    board = models.ForeignKey(to=Board, on_delete=models.CASCADE, related_name='cols')
+    position = models.PositiveSmallIntegerField(blank=True, default=0, verbose_name='Order position')
+
+    def __str__(self):
+        return f'{self.board} -> {self.name}'
 
 
 class Task(BaseDateAuditModel):
@@ -62,6 +71,7 @@ class Task(BaseDateAuditModel):
         max_length=3000,
         null=True
     )
+    col = models.ForeignKey(to=Col, on_delete=models.SET_NULL, null=True, related_name='tasks')
 
     def __str__(self):
         return self.name
