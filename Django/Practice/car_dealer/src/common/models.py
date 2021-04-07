@@ -7,3 +7,10 @@ class BaseDateAuditModel(models.Model):
 
     class Meta:
         abstract = True
+
+
+class MyBaseModel(models.Model):
+    name = models.CharField(max_length=30)
+
+    class Meta:
+        abstract = True
