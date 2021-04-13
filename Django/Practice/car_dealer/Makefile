@@ -17,3 +17,6 @@ test_env:
 
 test_user:
 	@docker exec -it -w /car_dealer car_dealer_api python src/manage.py createsuperuser
+
+shell:
+	@docker exec -it -w /car_dealer car_dealer_api python src/manage.py shell

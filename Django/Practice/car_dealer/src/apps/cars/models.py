@@ -13,11 +13,13 @@ from .choices import \
 
 
 class Color(MyBaseModel):
-    pass
+    def __str__(self):
+        return f'{self.name}'
 
 
 class Brand(MyBaseModel):
-    pass
+    def __str__(self):
+        return f'{self.name}'
 
 
 class Model(MyBaseModel):
@@ -25,6 +27,9 @@ class Model(MyBaseModel):
         to=Brand,
         on_delete=models.CASCADE
     )
+
+    def __str__(self):
+        return f'{self.brand_id} {self.name}'
 
 
 class Car(models.Model):
@@ -42,9 +47,15 @@ class Car(models.Model):
         on_delete=models.CASCADE
     )
 
+    def __str__(self):
+        return f'{self.model_id}, {self.color_id}'
+
 
 class Property(MyBaseModel):
     category = models.CharField(max_length=30)
+
+    def __str__(self):
+        return f'category {self.pk}'
 
 
 class CarProperty(models.Model):
@@ -99,16 +110,26 @@ class CarProperty(models.Model):
     )
     other = models.TextField(max_length=500, null=True)
 
+    def __str__(self):
+        return f'for {self.car_id}, id={self.car_id.pk}'
+
 
 class Picture(models.Model):
     car_id = models.ForeignKey(Car, on_delete=models.CASCADE)
-    url = models.CharField(max_length=80)
+    url = models.ImageField(
+        null=True,
+        verbose_name='picture',
+        blank=True
+    )
     metadata = models.TextField(null=True)
     position = models.CharField(
         max_length=1,
         choices=POSITION_CHOICES,
         null=True
     )
+
+    def __str__(self):
+        return f'Pict {self.pk}'
 
 
 class Order(models.Model):
@@ -123,3 +144,6 @@ class Order(models.Model):
         choices=ORDER_STATUS_CHOICES,
         default=ORDER_STATUS_OPEN
     )
+
+    def __str__(self):
+        return f'Order {self.pk}, status={self.status}'
