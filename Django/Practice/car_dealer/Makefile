@@ -20,3 +20,6 @@ test_user:
 
 shell:
 	@docker exec -it -w /car_dealer car_dealer_api python src/manage.py shell
+
+collectstatic:
+	@docker exec -it -w /car_dealer car_dealer_api python src/manage.py collectstatic

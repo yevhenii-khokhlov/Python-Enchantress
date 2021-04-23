@@ -1,15 +1,13 @@
-from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 from src.common.models import MyBaseModel
-from .choices import \
-    FUEL_CHOICES, \
-    ENGINE_CHOICES, \
-    POSITION_CHOICES, \
-    POPULATION_CHOICES, \
-    GEAR_CASE_CHOICES, GEAR_CASE_MECHANICAL, \
-    ORDER_STATUS_CHOICES, ORDER_STATUS_OPEN, \
-    CAR_STATUS_CHOICES, CAR_STATUS_AVAILABLE
+from .choices import (
+    FUEL_CHOICES,
+    ENGINE_CHOICES,
+    POSITION_CHOICES,
+    POPULATION_CHOICES,
+    GEAR_CASE_CHOICES, GEAR_CASE_MECHANICAL,
+    CAR_STATUS_CHOICES, CAR_STATUS_AVAILABLE)
 
 
 class Color(MyBaseModel):
@@ -36,7 +34,7 @@ class Car(models.Model):
     color_id = models.ForeignKey(
         to=Color,
         on_delete=models.SET_NULL,
-        null=True
+        null=True,
     )
     dealer_id = models.ForeignKey(
         to='dealers.Dealer',
@@ -115,8 +113,12 @@ class CarProperty(models.Model):
 
 
 class Picture(models.Model):
-    car_id = models.ForeignKey(Car, on_delete=models.CASCADE)
-    url = models.ImageField(
+    car_id = models.ForeignKey(
+        to=Car,
+        on_delete=models.CASCADE,
+        related_name="photos"
+    )
+    picture = models.ImageField(
         null=True,
         verbose_name='picture',
         blank=True
@@ -130,20 +132,3 @@ class Picture(models.Model):
 
     def __str__(self):
         return f'Pict {self.pk}'
-
-
-class Order(models.Model):
-    car_id = models.ForeignKey(Car, on_delete=models.CASCADE)
-    first_name = models.CharField(max_length=30)
-    last_name = models.CharField(max_length=30)
-    email = models.CharField(max_length=50)
-    phone = models.CharField(max_length=9)
-    message = models.TextField(null=True)
-    status = models.CharField(
-        max_length=1,
-        choices=ORDER_STATUS_CHOICES,
-        default=ORDER_STATUS_OPEN
-    )
-
-    def __str__(self):
-        return f'Order {self.pk}, status={self.status}'

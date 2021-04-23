@@ -21,6 +21,7 @@ class City(MyBaseModel):
 class Dealer(AbstractUser):
     title = models.CharField(max_length=50)
     city_id = models.ForeignKey(City, on_delete=models.SET_NULL, null=True)
+    name = models.CharField(max_length=25, default='car dealer')
 
     def __str__(self):
         return f'{self.name} on {self.city_id}'
