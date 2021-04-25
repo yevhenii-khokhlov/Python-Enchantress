@@ -12,3 +12,4 @@ class CarDetailView(TemplateView):
         context["car"] = Car.objects.prefetch_related("photos")
 
         return context
+# TODO: view

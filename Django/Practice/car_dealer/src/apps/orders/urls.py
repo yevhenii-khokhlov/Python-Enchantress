@@ -8,5 +8,5 @@ from .views import OrderView
 app_name = 'orders'
 
 urlpatterns = [
-    path('new/', OrderView.as_view(), name='newsletters')
+    path('new/', OrderView.as_view(), name='new-order')
 ]

@@ -1,15 +1,9 @@
 from django.db import models
 
+from .choices import ORDER_STATUS_CHOICES, ORDER_STATUS_OPEN
+
 
 class Order(models.Model):
-    ORDER_STATUS_OPEN = 'o'
-    ORDER_STATUS_CLOSE = 'c'
-
-    ORDER_STATUS_CHOICES = (
-        (ORDER_STATUS_OPEN, 'open'),
-        (ORDER_STATUS_CLOSE, 'close'),
-    )
-
     car_id = models.ForeignKey(to="cars.Car", on_delete=models.CASCADE)
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
