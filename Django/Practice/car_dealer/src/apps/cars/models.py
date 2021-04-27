@@ -21,32 +21,34 @@ class Brand(MyBaseModel):
 
 
 class Model(MyBaseModel):
-    brand_id = models.ForeignKey(
+    brand = models.ForeignKey(
         to=Brand,
         on_delete=models.CASCADE
     )
 
     def __str__(self):
-        return f'{self.brand_id} {self.name}'
+        return f'{self.brand} {self.name}'
 
 
 class Car(models.Model):
-    color_id = models.ForeignKey(
+    color = models.ForeignKey(
         to=Color,
         on_delete=models.SET_NULL,
         null=True,
     )
-    dealer_id = models.ForeignKey(
+    dealer = models.ForeignKey(
         to='dealers.Dealer',
         on_delete=models.CASCADE
     )
-    model_id = models.ForeignKey(
+    model = models.ForeignKey(
         to=Model,
         on_delete=models.CASCADE
     )
+    publish = models.BooleanField(default=True)
+    views = models.IntegerField(default=0)
 
     def __str__(self):
-        return f'{self.model_id}, {self.color_id}'
+        return f'{self.model}, {self.color}'
 
 
 class Property(MyBaseModel):
