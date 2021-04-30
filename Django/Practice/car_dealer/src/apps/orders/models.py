@@ -4,7 +4,7 @@ from .choices import ORDER_STATUS_CHOICES, ORDER_STATUS_OPEN
 
 
 class Order(models.Model):
-    car_id = models.ForeignKey(to="cars.Car", on_delete=models.CASCADE)
+    car = models.ForeignKey(to="cars.Car", on_delete=models.CASCADE)
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
     email = models.CharField(max_length=50)
