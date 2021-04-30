@@ -1,0 +1,7 @@
+ORDER_STATUS_OPEN = 'o'
+ORDER_STATUS_CLOSE = 'c'
+
+ORDER_STATUS_CHOICES = (
+    (ORDER_STATUS_OPEN, 'open'),
+    (ORDER_STATUS_CLOSE, 'close'),
+)
